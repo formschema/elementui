@@ -8,8 +8,7 @@
 </template>
 
 <script>
-  // import FormSchema from 'vue-json-schema'
-  import FormSchema from '/home/demsking/Workspace/projects/vue-json-schema/component.vue'
+  import FormSchema from 'vue-json-schema'
   import {
     Form,
     FormItem,
