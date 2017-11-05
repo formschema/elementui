@@ -2,7 +2,7 @@
 
 A vue-json-schema demo project with ElementUI
 
-![vue-json-schema-demo-elementui](https://github.com/demsking/vue-json-schema/raw/master/screenshot.png "vue-json-schema-demo-elementui")
+![vue-json-schema-demo-elementui](https://github.com/demsking/vue-json-schema-demo-elementui/raw/master/screenshot.png "vue-json-schema-demo-elementui")
 
 ## Build Setup
 
