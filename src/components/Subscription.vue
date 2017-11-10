@@ -18,13 +18,16 @@
     const rules = {}
 
     vm.fields.forEach((field) => {
+      const type = field.schemaType === 'array' && field.type === 'radio'
+        ? 'string'
+        : field.schemaType
+      const required = field.required
+      const message = field.title
+      const trigger = ['radio', 'checkbox', 'select'].includes(field.type)
+        ? 'change' : 'blur'
+
       // http://element.eleme.io/#/en-US/component/form#validation
-      rules[field.name] = {
-        required: field.required,
-        message: field.title,
-        trigger: ['radio', 'checkbox', 'select'].includes(field.type)
-          ? 'change' : 'blur'
-      }
+      rules[field.name] = { type, required, message, trigger }
     })
 
     // returning the form props
@@ -95,14 +98,17 @@
     margin: auto;
   }
 
-  h1 {
-    font-size: 2em;
+  h2 {
+    font-size: 1.7em;
     text-align: center;
-    margin-top: 0
+    margin-top: 0;
+    margin-bottom: .2em
   }
 
-  p {
+  h2 + small {
+    display: block;
     text-align: center;
+    margin-bottom: 1.2em
   }
 
   small {
