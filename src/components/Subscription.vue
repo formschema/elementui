@@ -1,7 +1,6 @@
 <template>
   <el-card class="form">
-    <form-schema ref="form"
-      :schema="schema" v-model="model" @submit.prevent="submit">
+    <form-schema ref="formSchema" :schema="schema" v-model="model">
       <el-button type="primary" @click="submit">Subscribe</el-button>
     </form-schema>
   </el-card>
@@ -14,7 +13,6 @@
     FormItem,
     Input,
     Radio,
-    Checkbox,
     Switch,
     Select,
     Option,
@@ -31,10 +29,13 @@
     vm.fields.forEach((field) => {
       rules[field.name] = {
         required: field.required,
-        message: field.title
+        message: field.title,
+        trigger: ['radio', 'checkbox', 'select'].includes(field.type)
+          ? 'change' : 'blur'
       }
     })
 
+    // returning the form props
     return { labelWidth, rules, model }
   })
 
@@ -42,7 +43,6 @@
   FormSchema.setComponent('email', Input)
   FormSchema.setComponent('text', Input)
   FormSchema.setComponent('textarea', Input)
-  FormSchema.setComponent('checkbox', Checkbox)
   FormSchema.setComponent('checkbox', Switch)
   FormSchema.setComponent('radio', Radio)
   FormSchema.setComponent('select', Select)
