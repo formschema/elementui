@@ -36,10 +36,11 @@
     prop: field.name
   }))
 
-  FormSchema.setComponent('text', 'el-input')
   FormSchema.setComponent('email', 'el-input')
+  FormSchema.setComponent('text', 'el-input')
   FormSchema.setComponent('textarea', 'el-input')
-  FormSchema.setComponent('checkbox', 'el-switch')
+  FormSchema.setComponent('checkbox', 'el-checkbox')
+  FormSchema.setComponent('switch', 'el-switch')
   FormSchema.setComponent('radio', 'el-radio')
   FormSchema.setComponent('select', 'el-select')
 
@@ -75,6 +76,7 @@
             // this.model contains the valid data according your JSON Schema.
             // You can submit your model to the server here
             console.log(JSON.stringify(this.model))
+            this.$refs.formSchema.clearErrorMessage()
           } else {
             this.$refs.formSchema.setErrorMessage('Please fill out the required fields')
             return false
