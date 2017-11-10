@@ -8,18 +8,9 @@
 
 <script>
   import FormSchema from 'vue-json-schema'
-  import {
-    Form,
-    FormItem,
-    Input,
-    Radio,
-    Switch,
-    Select,
-    Option,
-    Button
-  } from 'element-ui'
+  import { Option } from 'element-ui'
 
-  FormSchema.setComponent('form', Form, (vm) => {
+  FormSchema.setComponent('form', 'el-form', (vm) => {
     // vm is the FormSchema VM
 
     const labelWidth = '120px'
@@ -41,17 +32,34 @@
   })
 
   // http://element.eleme.io/#/en-US/component/form#validation
-  FormSchema.setComponent('label', FormItem, (vm, field) => ({
+  FormSchema.setComponent('label', 'el-form-item', (vm, field) => ({
     prop: field.name
   }))
 
-  FormSchema.setComponent('email', Input)
-  FormSchema.setComponent('text', Input)
-  FormSchema.setComponent('textarea', Input)
-  FormSchema.setComponent('checkbox', Switch)
-  FormSchema.setComponent('radio', Radio)
-  FormSchema.setComponent('select', Select)
+  FormSchema.setComponent('text', 'el-input')
+  FormSchema.setComponent('email', 'el-input')
+  FormSchema.setComponent('textarea', 'el-input')
+  FormSchema.setComponent('checkbox', 'el-switch')
+  FormSchema.setComponent('radio', 'el-radio')
+  FormSchema.setComponent('select', 'el-select')
+
+  // You can also use the component object
   FormSchema.setComponent('option', Option)
+
+  // By default `<h1/>` is used to render the form title.
+  // To override this, use the `title` type:
+  FormSchema.setComponent('title', 'h2')
+
+  // By default `<p/>` is used to render the form title.
+  // To override this, use the `description` type:
+  FormSchema.setComponent('description', 'small')
+
+  // By default `<div/>` is used to render the message error.
+  // To override this, use the `error` type:
+  FormSchema.setComponent('error', 'el-alert', (vm) => ({
+    type: 'error',
+    title: vm.error
+  }))
 
   export default {
     data: () => ({
@@ -68,7 +76,7 @@
             // You can submit your model to the server here
             console.log(JSON.stringify(this.model))
           } else {
-            console.log('error submit!!')
+            this.$refs.formSchema.setErrorMessage('Please fill out the required fields')
             return false
           }
         })
@@ -98,5 +106,9 @@
   small {
     line-height: 20px;
     display: block;
+  }
+
+  .el-alert {
+    margin-bottom: 15px
   }
 </style>
