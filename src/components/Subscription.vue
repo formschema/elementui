@@ -27,6 +27,7 @@
     const rules = {}
 
     vm.fields.forEach((field) => {
+      // http://element.eleme.io/#/en-US/component/form#validation
       rules[field.name] = {
         required: field.required,
         message: field.title,
@@ -39,7 +40,11 @@
     return { labelWidth, rules, model }
   })
 
-  FormSchema.setComponent('label', FormItem)
+  // http://element.eleme.io/#/en-US/component/form#validation
+  FormSchema.setComponent('label', FormItem, (vm, field) => ({
+    prop: field.name
+  }))
+
   FormSchema.setComponent('email', Input)
   FormSchema.setComponent('text', Input)
   FormSchema.setComponent('textarea', Input)
@@ -55,9 +60,18 @@
     }),
     methods: {
       submit (e) {
-        // this.model contains the valid data according your JSON Schema.
-        // You can submit your model to the server here
-        console.log(JSON.stringify(this.model))
+        // this.$refs.formSchema.form() returns the ElementUI's form instance
+
+        this.$refs.formSchema.form().validate((valid) => {
+          if (valid) {
+            // this.model contains the valid data according your JSON Schema.
+            // You can submit your model to the server here
+            console.log(JSON.stringify(this.model))
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
       }
     },
     components: { FormSchema }
