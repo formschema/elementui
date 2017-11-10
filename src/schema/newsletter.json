@@ -20,7 +20,8 @@
       "title": "Email",
       "attrs": {
         "type": "email",
-        "placeholder": "Your Email"
+        "placeholder": "Your Email",
+        "title": "Please enter your email"
       }
     },
     "lists": {
@@ -28,7 +29,8 @@
       "title": "List",
       "enum": ["Daily New", "Promotion"],
       "attrs": {
-        "placeholder": "Select your list subscription"
+        "placeholder": "Select your list subscription",
+        "title": "Please select your list subscription"
       }
     },
     "source": {
