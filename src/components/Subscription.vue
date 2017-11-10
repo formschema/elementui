@@ -2,6 +2,7 @@
   <el-card class="form">
     <form-schema ref="formSchema" :schema="schema" v-model="model">
       <el-button type="primary" @click="submit">Subscribe</el-button>
+      <el-button type="reset">Reset</el-button>
     </form-schema>
   </el-card>
 </template>
@@ -10,7 +11,7 @@
   import FormSchema from 'vue-json-schema'
   import { Option } from 'element-ui'
 
-  FormSchema.setComponent('form', 'el-form', (vm) => {
+  FormSchema.setComponent('form', 'el-form', ({ vm }) => {
     // vm is the FormSchema VM
 
     const labelWidth = '120px'
@@ -35,7 +36,7 @@
   })
 
   // http://element.eleme.io/#/en-US/component/form#validation
-  FormSchema.setComponent('label', 'el-form-item', (vm, field) => ({
+  FormSchema.setComponent('label', 'el-form-item', ({ field }) => ({
     prop: field.name
   }))
 
@@ -60,7 +61,7 @@
 
   // By default `<div/>` is used to render the message error.
   // To override this, use the `error` type:
-  FormSchema.setComponent('error', 'el-alert', (vm) => ({
+  FormSchema.setComponent('error', 'el-alert', ({ vm }) => ({
     type: 'error',
     title: vm.error
   }))
