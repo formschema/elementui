@@ -9,12 +9,13 @@
 
 <script>
 // import FormSchema from '@vue-json-schema/form-schema'
-import { setComponent, FormSchema } from 'vue-json-schema'
+//import { setComponent, FormSchema } from 'vue-json-schema'
+import FormSchema from 'vue-json-schema'
 /*
 import { Option } from 'element-ui'
 */
 
-setComponent('form', 'el-form', ({ vm }) => {
+FormSchema.setComponent('form', 'el-form', ({ vm }) => {
   // vm is the FormSchema VM
 
   const labelWidth = '120px'
@@ -38,18 +39,18 @@ setComponent('form', 'el-form', ({ vm }) => {
   return { labelWidth, rules, model }
 })
 
-const input = (tag) => ({
+const formItem = (elementInput, enableLabel = true) => ({
   disableWrappingLabel: true,
   render: (createElement, { props, slots }) => [
     createElement('el-form-item', {
       // http://element.eleme.io/#/en-US/component/form#form-item-attributes
       props: {
-        label: props.field.label,
+        label: enableLabel ? props.field.label : '',
         // http://element.eleme.io/#/en-US/component/form#validation
         prop: props.field.attrs.name
       }
     }, [
-      createElement(tag, props.input, slots()),
+      elementInput(createElement, { props, slots }),
       props.field.description
         ? createElement('small', props.field.description)
         : undefined
@@ -57,33 +58,53 @@ const input = (tag) => ({
   ]
 })
 
-setComponent('email', input('el-input'))
-setComponent('password', 'el-input', { type: 'password' })
-setComponent('text', input('el-input'))
-setComponent('textarea', input('el-input'))
-setComponent('checkbox', input('el-checkbox'))
-setComponent('switch', input('el-switch'))
-setComponent('radio', input('el-radio'))
-setComponent('button', 'el-button')
-setComponent('arraybutton', 'el-button', () => ({
+const input = (tag) => formItem((h, { props, slots }) => {
+  return h(tag, props.input, slots())
+})
+
+const choice = (tag) => formItem((h, { props, slots }) => h(tag, {
+  ...props.input,
+  props: {
+    ...props.input.props,
+    label: props.field.label,
+    name: props.field.attrs.name,
+    trueLabel: props.field.attrs.value
+  }
+}, slots()), false)
+
+const group = (tag) => formItem((h, { props, slots }) => h(tag, {
+  ...props.input,
+  props: {
+    label: props.field.label,
+    name: props.field.attrs.name
+  }
+}, slots()))
+
+FormSchema.setComponent('email', input('el-input'))
+FormSchema.setComponent('password', input('el-input'))
+FormSchema.setComponent('text', input('el-input'))
+FormSchema.setComponent('textarea', input('el-input'))
+FormSchema.setComponent('checkbox', choice('el-checkbox'))
+FormSchema.setComponent('switch', input('el-switch'))
+FormSchema.setComponent('radio', choice('el-radio'))
+FormSchema.setComponent('checkboxgroup', group('el-checkbox-group'))
+FormSchema.setComponent('radiogroup', group('el-radio-group'))
+FormSchema.setComponent('select', input('el-select'))
+FormSchema.setComponent('option', 'el-option')
+FormSchema.setComponent('button', 'el-button')
+FormSchema.setComponent('arraybutton', 'el-button', () => ({
   type: 'text'
 }))
-setComponent('select', input('el-select'))
 
-// You can also use the component object
-setComponent('option', 'el-option')
-
-// By default `<div/>` is used to render the message error.
-// To override this, use the `error` type:
-setComponent('error', 'el-alert', ({ vm }) => ({
-  type: 'error',
-  title: vm.error
-}))
-
-setComponent('arraybutton', 'el-button', {
+FormSchema.setComponent('arraybutton', 'el-button', {
   type: 'text',
   label: 'Add more item'
 })
+
+FormSchema.setComponent('error', 'el-alert', ({ vm }) => ({
+  type: 'error',
+  title: vm.error
+}))
 
 export default {
   props: {
@@ -129,6 +150,9 @@ export default {
      * @private
      */
     inputWrappingClass: { type: String }
+  },
+  created () {
+    setTimeout(() => this.reset(), 0)
   },
   methods: {
     formSchema () {
