@@ -93,6 +93,7 @@ FormSchema.setComponent('radiogroup', group('el-radio-group'))
 FormSchema.setComponent('select', input('el-select'))
 FormSchema.setComponent('option', 'el-option')
 FormSchema.setComponent('button', 'el-button')
+FormSchema.setComponent('buttonswrapper', 'el-form-item')
 FormSchema.setComponent('arraybutton', 'el-button', () => ({
   type: 'text'
 }))
