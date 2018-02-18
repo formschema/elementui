@@ -59,7 +59,7 @@ const formItem = (elementInput, enableLabel = true) => ({
 })
 
 const input = (tag) => formItem((h, { props, slots }) => {
-  return h(tag, props.input, slots())
+  return h(tag, props.input, slots().default)
 })
 
 const choice = (tag) => formItem((h, { props, slots }) => h(tag, {
@@ -70,15 +70,16 @@ const choice = (tag) => formItem((h, { props, slots }) => h(tag, {
     name: props.field.attrs.name,
     trueLabel: props.field.attrs.value
   }
-}, slots()), false)
+}, slots().default), false)
 
 const group = (tag) => formItem((h, { props, slots }) => h(tag, {
   ...props.input,
   props: {
+    ...props.input.props,
     label: props.field.label,
     name: props.field.attrs.name
   }
-}, slots()))
+}, slots().default))
 
 FormSchema.setComponent('email', input('el-input'))
 FormSchema.setComponent('password', input('el-input'))
