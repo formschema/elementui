@@ -1,19 +1,14 @@
 <template>
   <FormSchema ref="formSchema" v-bind="$props" v-model="model">
-    <slot>
-      <el-button type="primary" @click="submit">Submit</el-button>
-      <el-button @click="reset">Reset</el-button>
-    </slot>
+    <slot></slot>
   </FormSchema>
 </template>
 
 <script>
 // import FormSchema from '@vue-json-schema/form-schema'
 //import { setComponent, FormSchema } from 'vue-json-schema'
-import FormSchema from 'vue-json-schema'
-/*
-import { Option } from 'element-ui'
-*/
+//import FormSchema from 'vue-json-schema'
+import FormSchema from '/home/demsking/Workspace/projects/vue-json-schema/dist/FormSchema.js'
 
 FormSchema.setComponent('form', 'el-form', ({ vm }) => {
   // vm is the FormSchema VM
@@ -94,10 +89,6 @@ FormSchema.setComponent('select', input('el-select'))
 FormSchema.setComponent('option', 'el-option')
 FormSchema.setComponent('button', 'el-button')
 FormSchema.setComponent('buttonswrapper', 'el-form-item')
-FormSchema.setComponent('arraybutton', 'el-button', () => ({
-  type: 'text'
-}))
-
 FormSchema.setComponent('arraybutton', 'el-button', {
   type: 'text',
   label: 'Add more item'
