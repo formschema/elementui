@@ -1,0 +1,60 @@
+<template>
+  <el-card class="form">
+    <FormSchemaElementUI ref="formSchema" :schema="schema" v-model="model">
+      <!--
+      <el-button type="primary" @click="submit">Subscribe</el-button>
+      <el-button @click="reset">Reset</el-button>
+      -->
+    </FormSchemaElementUI>
+  </el-card>
+</template>
+
+<script>
+  import FormSchemaElementUI from '@vue-json-schema/wrap-elementui'
+
+  export default {
+    data: () => ({
+      schema: Promise.resolve(require('../schema/newsletter')),
+      model: {}
+    }),
+    methods: {
+      submit (data) {
+        console.log(data)
+      },
+      reset () {
+        this.$refs.formSchema.form().resetFields()
+      }
+    },
+    components: { FormSchemaElementUI }
+  }
+</script>
+
+<style>
+  .form {
+    text-align: left;
+    width: 600px;
+    margin: auto;
+  }
+
+  h1 {
+    font-size: 1.7em;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: .2em
+  }
+
+  h1 + p {
+    display: block;
+    text-align: center;
+    margin-bottom: 1.2em
+  }
+
+  small {
+    line-height: 20px;
+    display: block;
+  }
+
+  .el-alert {
+    margin-bottom: 15px
+  }
+</style>
