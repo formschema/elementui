@@ -2,7 +2,6 @@
   "name": "@formschema/elementui",
   "version": "1.0.0",
   "description": "Vue component form based on JSON Schema",
-  "main": "components/FormSchemaElementUI.vue",
   "main": "dist/FormSchemaElementUI.js",
   "scripts": {
     "demo": "cd demo && npm run serve",
@@ -11,13 +10,13 @@
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
     "posttest": "make readme",
     "prepublish": "npm test",
-    "build": "vue-cli-service build --target lib --name FormSchemaElementUI.js",
-    "test": "vue-cli-service test",
+    "build": "vue-cli-service build --target lib",
+    "test": "vue-cli-service test --colors --testMatch '<rootDir>/test/specs/*.spec.js'",
     "lint": "vue-cli-service lint"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vue-json-schema/elementui.git"
+    "url": "git+https://github.com/formschema/elementui.git"
   },
   "keywords": [
     "vue",
@@ -28,9 +27,9 @@
   "author": "Sébastien Demanou",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vue-json-schema/elementui/issues"
+    "url": "https://github.com/formschema/elementui/issues"
   },
-  "homepage": "https://github.com/vue-json-schema/elementui#readme",
+  "homepage": "https://github.com/formschema/elementui#readme",
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.40",
     "@babel/plugin-transform-runtime": "^7.0.0-beta.40",
@@ -45,7 +44,7 @@
     "babel-jest": "^22.0.4",
     "coveralls": "^3.0.0",
     "vue": "^2.5.13",
-    "vue-json-schema": "git+https://github.com/vue-json-schema/form-schema.git",
+    "formschema": "git+https://github.com/formschema/form-schema.git",
     "vue-template-compiler": "^2.5.13"
   },
   "dependencies": {},
