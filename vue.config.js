@@ -12,7 +12,7 @@ module.exports = {
       umdNamedDefine: true
     },
     externals: {
-      'vue-json-schema': 'vue-json-schema',
+      '@formschema/native': '@formschema/native',
       'element-ui': 'element-ui'
     }
   }
