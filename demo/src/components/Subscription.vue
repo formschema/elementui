@@ -10,7 +10,7 @@
 </template>
 
 <script>
-  import FormSchemaElementUI from '@vue-json-schema/wrap-elementui'
+  import FormSchemaElementUI from '../../..'
 
   export default {
     data: () => ({
