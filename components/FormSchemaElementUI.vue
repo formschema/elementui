@@ -5,10 +5,7 @@
 </template>
 
 <script>
-// import FormSchema from '@vue-json-schema/form-schema'
-//import { setComponent, FormSchema } from 'vue-json-schema'
-//import FormSchema from 'vue-json-schema'
-import FormSchema from '/home/demsking/Workspace/projects/vue-json-schema/dist/FormSchema.js'
+import FormSchema from '@formschema/native'
 
 FormSchema.setComponent('form', 'el-form', ({ vm }) => {
   // vm is the FormSchema VM
@@ -33,7 +30,7 @@ FormSchema.setComponent('form', 'el-form', ({ vm }) => {
   // returning the form props
   return { labelWidth, rules, model }
 })
-
+/*
 const formItem = (elementInput, enableLabel = true) => ({
   disableWrappingLabel: true,
   render: (createElement, { props, slots }) => [
@@ -51,43 +48,61 @@ const formItem = (elementInput, enableLabel = true) => ({
         : undefined
     ])
   ]
+})*/
+
+const formItem = {
+  disableWrappingLabel: true,
+  functional: true,
+  render: (createElement, { props, slots }) => {
+    return createElement('el-form-item', {
+      // http://element.eleme.io/#/en-US/component/form#form-item-attributes
+      props: {
+        label: props.field.label,
+        // http://element.eleme.io/#/en-US/component/form#validation
+        prop: props.field.attrs.name
+      }
+    }, slots().default)
+  }
+}
+
+const choice = (tag) => ({
+  functional: true,
+  render: (h, { props, slots }) => h(tag, {
+    ...props.input,
+    props: {
+      ...props.input.props,
+      label: props.field.label,
+      name: props.field.attrs.name
+    }
+  }, slots().default)
 })
 
-const input = (tag) => formItem((h, { props, slots }) => {
-  return h(tag, props.input, slots().default)
+const group = (tag) => ({
+  functional: true,
+  render: (h, { props, slots }) => h(tag, {
+    ...props.input,
+    props: {
+      ...props.input.props,
+      label: props.field.label,
+      name: props.field.attrs.name
+    }
+  }, slots().default)
 })
 
-const choice = (tag) => formItem((h, { props, slots }) => h(tag, {
-  ...props.input,
-  props: {
-    ...props.input.props,
-    label: props.field.label,
-    name: props.field.attrs.name,
-    trueLabel: props.field.attrs.value
-  }
-}, slots().default), false)
-
-const group = (tag) => formItem((h, { props, slots }) => h(tag, {
-  ...props.input,
-  props: {
-    ...props.input.props,
-    label: props.field.label,
-    name: props.field.attrs.name
-  }
-}, slots().default))
-
-FormSchema.setComponent('email', input('el-input'))
-FormSchema.setComponent('password', input('el-input'))
-FormSchema.setComponent('text', input('el-input'))
-FormSchema.setComponent('textarea', input('el-input'))
+FormSchema.setComponent('email', 'el-input')
+FormSchema.setComponent('password', 'el-input')
+FormSchema.setComponent('text', 'el-input')
+FormSchema.setComponent('textarea', 'el-input')
 FormSchema.setComponent('checkbox', choice('el-checkbox'))
-FormSchema.setComponent('switch', input('el-switch'))
+FormSchema.setComponent('switch', 'el-switch')
 FormSchema.setComponent('radio', choice('el-radio'))
 FormSchema.setComponent('checkboxgroup', group('el-checkbox-group'))
 FormSchema.setComponent('radiogroup', group('el-radio-group'))
-FormSchema.setComponent('select', input('el-select'))
+FormSchema.setComponent('select', 'el-select')
 FormSchema.setComponent('option', 'el-option')
 FormSchema.setComponent('button', 'el-button')
+FormSchema.setComponent('submitbutton', 'el-button')
+FormSchema.setComponent('inputswrapper', formItem)
 FormSchema.setComponent('buttonswrapper', 'el-form-item')
 FormSchema.setComponent('arraybutton', 'el-button', {
   type: 'text',
