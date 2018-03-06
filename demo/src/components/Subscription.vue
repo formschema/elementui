@@ -14,7 +14,7 @@
 
   export default {
     data: () => ({
-      schema: Promise.resolve(require('../schema/newsletter')),
+      schema: require('../schema/newsletter'),
       model: {}
     }),
     methods: {
