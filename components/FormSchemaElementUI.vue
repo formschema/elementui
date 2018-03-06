@@ -1,111 +1,151 @@
 <template>
-  <FormSchema ref="formSchema" v-bind="$props" v-model="model">
+  <FormSchema ref="formSchema" v-bind="$props" v-model="model" @submit="submit">
     <slot></slot>
   </FormSchema>
 </template>
 
 <script>
-// import FormSchema from '@vue-json-schema/form-schema'
-//import { setComponent, FormSchema } from 'vue-json-schema'
-//import FormSchema from 'vue-json-schema'
-import FormSchema from '/home/demsking/Workspace/projects/vue-json-schema/dist/FormSchema.js'
+import  { setComponent, default as FormSchema } from '@formschema/native'
 
-FormSchema.setComponent('form', 'el-form', ({ vm }) => {
-  // vm is the FormSchema VM
-
-  const labelWidth = '120px'
-  const model = vm.data
-  const rules = {}
-
-  vm.fields.forEach((field) => {
+const formItem = (elementInput, enableLabel = true, isArray = false) => ({
+  render: (createElement, context) => {
+    const field = context.data.$field
     const type = field.schemaType === 'array' && field.attrs.type === 'radio'
       ? 'string'
       : field.schemaType
-    const required = field.attrs.required
+    const required = field.attrs.required || false
     const message = field.attrs.title
     const trigger = ['radio', 'checkbox', 'select'].includes(field.attrs.type)
       ? 'change' : 'blur'
+    const label = isArray || enableLabel && !field.isArrayField ? field.label : ''
+    const prop = context.props.name
+    const rules = { type, required, message, trigger }
 
-    // http://element.eleme.io/#/en-US/component/form#validation
-    rules[field.attrs.name] = { type, required, message, trigger }
-  })
-
-  // returning the form props
-  return { labelWidth, rules, model }
-})
-
-const formItem = (elementInput, enableLabel = true) => ({
-  disableWrappingLabel: true,
-  render: (createElement, { props, slots }) => [
-    createElement('el-form-item', {
+    return createElement('el-form-item', {
       // http://element.eleme.io/#/en-US/component/form#form-item-attributes
-      props: {
-        label: enableLabel ? props.field.label : '',
-        // http://element.eleme.io/#/en-US/component/form#validation
-        prop: props.field.attrs.name
-      }
+      // http://element.eleme.io/#/en-US/component/form#validation
+      props: { label, prop, required, rules }
     }, [
-      elementInput(createElement, { props, slots }),
-      props.field.description
-        ? createElement('small', props.field.description)
+      elementInput(createElement, context),
+      field.description
+        ? createElement('small', field.description)
         : undefined
     ])
-  ]
-})
-
-const input = (tag) => formItem((h, { props, slots }) => {
-  return h(tag, props.input, slots().default)
-})
-
-const choice = (tag) => formItem((h, { props, slots }) => h(tag, {
-  ...props.input,
-  props: {
-    ...props.input.props,
-    label: props.field.label,
-    name: props.field.attrs.name,
-    trueLabel: props.field.attrs.value
   }
+})
+
+const events = (listeners) => ({
+  ...listeners,
+  input (value) {
+    listeners.input({ target: { value } })
+  },
+  change (value) {
+    listeners.change({ target: { value } })
+  }
+})
+
+const input = (tag) => formItem((h, { data, slots, listeners }) => {
+  return h(tag, { ...data, on: events(listeners) }, slots().default)
+})
+
+const choice = (tag) => formItem((h, { data, props, slots, listeners }) => h(tag, {
+  ...data,
+  props: {
+    ...props,
+    label: data.$field.label,
+    trueLabel: props.value
+  },
+  on: events(listeners)
 }, slots().default), false)
 
-const group = (tag) => formItem((h, { props, slots }) => h(tag, {
-  ...props.input,
+const group = (tag) => formItem((h, { data, props, slots }) => h(tag, {
+  ...data,
   props: {
-    ...props.input.props,
-    label: props.field.label,
-    name: props.field.attrs.name
+    ...props,
+    label: data.$field.label
   }
 }, slots().default))
 
-FormSchema.setComponent('email', input('el-input'))
-FormSchema.setComponent('password', input('el-input'))
-FormSchema.setComponent('text', input('el-input'))
-FormSchema.setComponent('textarea', input('el-input'))
-FormSchema.setComponent('checkbox', choice('el-checkbox'))
-FormSchema.setComponent('switch', input('el-switch'))
-FormSchema.setComponent('radio', choice('el-radio'))
-FormSchema.setComponent('checkboxgroup', group('el-checkbox-group'))
-FormSchema.setComponent('radiogroup', group('el-radio-group'))
-FormSchema.setComponent('select', input('el-select'))
-FormSchema.setComponent('option', 'el-option')
-FormSchema.setComponent('button', 'el-button')
-FormSchema.setComponent('buttonswrapper', 'el-form-item')
-FormSchema.setComponent('arraybutton', 'el-button', {
-  type: 'text',
-  label: 'Add more item'
+setComponent('form', {
+  render (createElement, { props, slots }) {
+    const labelWidth = '120px'
+    const model = {}
+
+    return createElement('el-form', {
+      props: { labelWidth, model }
+    }, slots().default)
+  }
 })
 
-FormSchema.setComponent('error', 'el-alert', ({ vm }) => ({
-  type: 'error',
-  title: vm.error
-}))
+setComponent('inputwrapper', {
+  render: (h, { slots }) => slots().default
+})
+
+setComponent('email', input('el-input'))
+setComponent('password', input('el-input'))
+setComponent('text', input('el-input'))
+setComponent('textarea', input('el-input'))
+setComponent('checkbox', choice('el-checkbox'))
+setComponent('switch', input('el-switch'))
+setComponent('radio', choice('el-radio'))
+setComponent('select', input('el-select'))
+setComponent('option', {
+  render (createElement, { data, props }) {
+    // http://element.eleme.io/#/en-US/component/select#option-attributes
+    return createElement('el-option', {
+      props: {
+        value: props.value,
+        label: data.$field.label,
+        disabled: props.disabled
+      }
+    })
+  }
+})
+
+setComponent('checkboxgroup', group('el-checkbox-group'))
+setComponent('radiogroup', group('el-radio-group'))
+
+setComponent('buttonswrapper', {
+  render: (h, { slots }) => h('el-form-item', slots().default)
+})
+
+setComponent('inputswrapper', formItem((h, { slots }) => {
+  return h('el-form-item', slots().default)
+}, true, true))
+
+setComponent('arraybutton', {
+  render: (h, { props, listeners }) => h('el-button', {
+    props: {
+      type: 'text',
+      disabled: props.disabled
+    },
+    on: listeners
+  }, 'Add more item')
+})
+
+setComponent('error', {
+  render: (h, { slots }) => h('el-alert', {
+    props: { type: 'error' }
+  }, slots().default)
+})
+
+setComponent('submitbutton', {
+  render: (h, { props }) => h('el-button', {
+    props: {
+      type: 'primary',
+      nativeType: props.type,
+      disabled: props.disabled
+    }
+  }, 'Submit')
+})
 
 export default {
   props: {
     /**
-     * The JSON Schema object. Use the `v-if` directive to load asynchronous schema.
-     * @type [Object, Promise]
+     * The JSON Schema object.
+     * @type Object
      */
-    schema: { type: [Object, Promise], required: true },
+    schema: { type: Object, required: true },
 
     /**
      * Use this directive to create two-way data bindings with the component. It automatically picks the correct way to update the element based on the input type.
@@ -143,9 +183,6 @@ export default {
      * @private
      */
     inputWrappingClass: { type: String }
-  },
-  created () {
-    setTimeout(() => this.reset(), 0)
   },
   methods: {
     formSchema () {
