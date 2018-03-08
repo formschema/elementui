@@ -5,11 +5,11 @@
 </template>
 
 <script>
-import  { setComponent, default as FormSchema } from '@formschema/native'
+import  FormSchema from '@formschema/native'
 
 const formItem = (elementInput, enableLabel = true, isArray = false) => ({
   render: (createElement, context) => {
-    const field = context.data.$field
+    const field = context.props.field || context.data.field
     const type = field.schemaType === 'array' && field.attrs.type === 'radio'
       ? 'string'
       : field.schemaType
@@ -52,7 +52,7 @@ const choice = (tag) => formItem((h, { data, props, slots, listeners }) => h(tag
   ...data,
   props: {
     ...props,
-    label: data.$field.label,
+    label: data.field.label,
     trueLabel: props.value
   },
   on: events(listeners)
@@ -62,11 +62,11 @@ const group = (tag) => formItem((h, { data, props, slots }) => h(tag, {
   ...data,
   props: {
     ...props,
-    label: data.$field.label
+    label: data.field.label
   }
 }, slots().default))
 
-setComponent('form', {
+FormSchema.setComponent('form', {
   render (createElement, { props, slots }) {
     const labelWidth = '120px'
     const model = {}
@@ -77,43 +77,43 @@ setComponent('form', {
   }
 })
 
-setComponent('inputwrapper', {
+FormSchema.setComponent('inputwrapper', {
   render: (h, { slots }) => slots().default
 })
 
-setComponent('email', input('el-input'))
-setComponent('password', input('el-input'))
-setComponent('text', input('el-input'))
-setComponent('textarea', input('el-input'))
-setComponent('checkbox', choice('el-checkbox'))
-setComponent('switch', input('el-switch'))
-setComponent('radio', choice('el-radio'))
-setComponent('select', input('el-select'))
-setComponent('option', {
+FormSchema.setComponent('email', input('el-input'))
+FormSchema.setComponent('password', input('el-input'))
+FormSchema.setComponent('text', input('el-input'))
+FormSchema.setComponent('textarea', input('el-input'))
+FormSchema.setComponent('checkbox', choice('el-checkbox'))
+FormSchema.setComponent('switch', input('el-switch'))
+FormSchema.setComponent('radio', choice('el-radio'))
+FormSchema.setComponent('select', input('el-select'))
+FormSchema.setComponent('option', {
   render (createElement, { data, props }) {
     // http://element.eleme.io/#/en-US/component/select#option-attributes
     return createElement('el-option', {
       props: {
         value: props.value,
-        label: data.$field.label,
+        label: data.field.label,
         disabled: props.disabled
       }
     })
   }
 })
 
-setComponent('checkboxgroup', group('el-checkbox-group'))
-setComponent('radiogroup', group('el-radio-group'))
+FormSchema.setComponent('checkboxgroup', group('el-checkbox-group'))
+FormSchema.setComponent('radiogroup', group('el-radio-group'))
 
-setComponent('buttonswrapper', {
+FormSchema.setComponent('buttonswrapper', {
   render: (h, { slots }) => h('el-form-item', slots().default)
 })
 
-setComponent('inputswrapper', formItem((h, { slots }) => {
+FormSchema.setComponent('inputswrapper', formItem((h, { slots }) => {
   return h('el-form-item', slots().default)
 }, true, true))
 
-setComponent('arraybutton', {
+FormSchema.setComponent('arraybutton', {
   render: (h, { props, listeners }) => h('el-button', {
     props: {
       type: 'text',
@@ -123,13 +123,13 @@ setComponent('arraybutton', {
   }, 'Add more item')
 })
 
-setComponent('error', {
+FormSchema.setComponent('error', {
   render: (h, { slots }) => h('el-alert', {
     props: { type: 'error' }
   }, slots().default)
 })
 
-setComponent('submitbutton', {
+FormSchema.setComponent('submitbutton', {
   render: (h, { props }) => h('el-button', {
     props: {
       type: 'primary',
