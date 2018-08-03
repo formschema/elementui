@@ -26,18 +26,18 @@
   },
   "homepage": "https://github.com/formschema/elementui#readme",
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.55",
-    "@babel/plugin-transform-runtime": "^7.0.0-beta.55",
-    "@babel/preset-es2015": "^7.0.0-beta.53",
-    "@babel/preset-stage-2": "^7.0.0-beta.55",
-    "@vue/cli-plugin-babel": "^3.0.0-rc.10",
-    "@vue/cli-plugin-eslint": "^3.0.0-rc.10",
-    "@vue/cli-plugin-unit-jest": "^3.0.0-rc.10",
-    "@vue/cli-service": "^3.0.0-rc.10",
-    "@vue/eslint-config-standard": "^3.0.0-rc.10",
-    "@vue/test-utils": "^1.0.0-beta.23",
+    "@babel/core": "^7.0.0-beta.51",
+    "@babel/plugin-transform-runtime": "^7.0.0-beta.51",
+    "@babel/preset-es2015": "^7.0.0-beta.51",
+    "@babel/preset-stage-2": "^7.0.0-beta.51",
+    "@vue/cli-plugin-babel": "^3.0.0-rc.3",
+    "@vue/cli-plugin-eslint": "^3.0.0-rc.3",
+    "@vue/cli-plugin-unit-jest": "^3.0.0-rc.3",
+    "@vue/cli-service": "^3.0.0-rc.3",
+    "@vue/eslint-config-standard": "^3.0.0-rc.3",
+    "@vue/test-utils": "^1.0.0-beta.20",
     "babel-jest": "^22.4.4",
-    "vue": "^2.5.17"
+    "vue": "^2.5.16"
   },
   "dependencies": {}
 }
