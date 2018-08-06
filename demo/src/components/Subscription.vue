@@ -11,22 +11,19 @@
 </template>
 
 <script>
-  import {
-    Components,
-    default as FormSchema
-  } from '@formschema/native'
-
+  import FormSchema, { Components } from '@formschema/native'
   import ElementUIComponents from '../../..'
 
   export default {
     data: () => ({
       schema: require('../schema/newsletter'),
+      schema: require('../schema/sample'),
       components: ElementUIComponents(Components),
       model: {}
     }),
     methods: {
-      submit (data) {
-        console.log(data)
+      submit () {
+        console.log(JSON.stringify(this.model, null, 2))
       },
       reset () {
         this.$refs.formSchema.reset()
