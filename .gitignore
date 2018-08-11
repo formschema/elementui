@@ -39,3 +39,5 @@ jspm_packages
 *~
 *.kate-swp
 .directory
+
+dist/
