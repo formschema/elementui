@@ -2,10 +2,10 @@
   "name": "@formschema/elementui",
   "version": "1.0.0",
   "description": "Vue component form based on JSON Schema",
-  "main": "dist/ElementUIComponents.common.js",
+  "main": "dist/ElementUIComponents.umd.js",
   "scripts": {
     "demo": "cd demo && npm run serve",
-    "build": "vue-cli-service build --target lib --name ElementUIComponents --entry lib/ElementUI.js",
+    "build": "vue-cli-service build --no-clean --target lib --name ElementUIComponents --entry lib/ElementUIComponents.js",
     "test": "vue-cli-service test --colors --testMatch '<rootDir>/test/specs/*.spec.js'",
     "lint": "vue-cli-service lint --no-fix"
   },

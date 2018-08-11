@@ -1,31 +1,35 @@
 <template>
   <el-card class="form">
-    <FormSchemaElementUI ref="formSchema" :schema="schema" v-model="model">
-      <!--
-      <el-button type="primary" @click="submit">Subscribe</el-button>
-      <el-button @click="reset">Reset</el-button>
-      -->
-    </FormSchemaElementUI>
+    <FormSchema ref="formSchema" v-model="model" @submit.prevent
+      :schema="schema" :components="components">
+      <el-form-item>
+        <el-button type="primary" @click="submit">Subscribe</el-button>
+        <el-button @click="reset">Reset</el-button>
+      </el-form-item>
+    </FormSchema>
   </el-card>
 </template>
 
 <script>
-  import FormSchemaElementUI from '../../..'
+  import FormSchema, { Components } from '@formschema/native'
+  import ElementUIComponents from '../../..'
 
   export default {
     data: () => ({
       schema: require('../schema/newsletter'),
+      schema: require('../schema/sample'),
+      components: ElementUIComponents(Components),
       model: {}
     }),
     methods: {
-      submit (data) {
-        console.log(data)
+      submit () {
+        console.log(JSON.stringify(this.model, null, 2))
       },
       reset () {
-        this.$refs.formSchema.form().resetFields()
+        this.$refs.formSchema.reset()
       }
     },
-    components: { FormSchemaElementUI }
+    components: { FormSchema }
   }
 </script>
 
